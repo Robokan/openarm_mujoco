@@ -133,7 +133,10 @@
         material="matte_black" type="mesh" mesh="body_link0_5.obj" class="visual" />
       <!-- Ego / chest camera: between the shoulders, just touching the chest
            front (~x=0.063), looking forward (+X), pitched down ~15°. -->
-      <camera name="ego_camera" pos="0.065 0 0.70" xyaxes="0 -1 0 0.258819 0 0.965926" fovy="100"/>
+      <!-- Chest camera pitched 67 deg down so the WHOLE table fits in frame
+           (at the old 15 deg the near half of the table was below the image;
+           verified by projecting the table corners: all inside with 8% margin). -->
+      <camera name="ego_camera" pos="0.065 0 0.70" xyaxes="0 -1 0 0.920505 0 0.390731" fovy="100"/>
       <!-- Visual marker for the ego cam mount (group 0 = always drawn). -->
       <geom name="ego_camera_marker" type="box" size="0.012 0.018 0.01" pos="0.065 0 0.70"
         rgba="0.2 0.85 1 1" contype="0" conaffinity="0" group="0"/>

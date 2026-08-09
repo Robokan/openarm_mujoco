@@ -18,14 +18,19 @@
       </default>
       <default class="motor_finger">
         <joint limited="true" type="slide" damping="2" stiffness="0.5" />
+        <!-- High kp so a closed command keeps squeezing when a cube blocks the fingers. -->
         <position forcelimited="true" forcerange="-333 333" ctrllimited="true" ctrlrange="0 0.044"
-          kp="100" />
+          kp="800" />
       </default>
       <default class="collision">
-        <geom material="collision_material" condim="3" conaffinity="1" priority="1" group="3"
-          solref="0.005 1" friction="1 0.01 0.01" />
-        <!-- <material name="collision_material" rgba="1 0 0 0.5" specular="0.2" shininess="0.1"/> -->
+        <geom material="collision_material" condim="3" contype="1" conaffinity="1" priority="1"
+          group="3" solref="0.005 1" friction="1 0.01 0.01" />
         <equality solimp="0.99 0.999 1e-05" solref="0.005 1" />
+      </default>
+      <!-- Stickier finger/palm contacts for picking up the cube. -->
+      <default class="collision_grasp">
+        <geom material="collision_material" condim="4" contype="1" conaffinity="1" priority="1"
+          group="3" solref="0.002 1" friction="4 0.5 0.1" />
       </default>
       <default class="visual">
         <geom material="visualgeom" contype="0" conaffinity="0" group="2" />
@@ -126,6 +131,12 @@
         material="metal_silver" type="mesh" mesh="body_link0_4.obj" class="visual" />
       <geom name="openarm_body_link0_visual_5" pos="0.0 0.0 0.0" quat="1.0 0.0 0.0 0.0"
         material="matte_black" type="mesh" mesh="body_link0_5.obj" class="visual" />
+      <!-- Ego / chest camera: between the shoulders, just touching the chest
+           front (~x=0.063), looking forward (+X), pitched down ~15°. -->
+      <camera name="ego_camera" pos="0.065 0 0.70" xyaxes="0 -1 0 0.258819 0 0.965926" fovy="100"/>
+      <!-- Visual marker for the ego cam mount (group 0 = always drawn). -->
+      <geom name="ego_camera_marker" type="box" size="0.012 0.018 0.01" pos="0.065 0 0.70"
+        rgba="0.2 0.85 1 1" contype="0" conaffinity="0" group="0"/>
       <body name="openarm_left_link0" pos="0.0 0.031 0.698"
         quat="0.7071054825112363 -0.7071080798594735 0.0 0.0">
         <inertial pos="-0.0009483362816297526 0.0001580207020448382 0.03076860287587199"
@@ -253,13 +264,20 @@
                             diaginertia="0.0001 0.00025 0.00017" />
                           <geom name="openarm_left_hand_collision" pos="0.0 0.005 -0.6585"
                             quat="1.0 0.0 0.0 0.0" type="mesh" mesh="hand_collision"
-                            class="collision" />
+                            class="collision_grasp" />
                           <geom name="openarm_left_hand_visual_0" pos="0.0 0.005 -0.6585"
                             quat="1.0 0.0 0.0 0.0" material="metal_silver" type="mesh"
                             mesh="hand_0.obj" class="visual" />
                           <geom name="openarm_left_hand_visual_1" pos="0.0 0.005 -0.6585"
                             quat="1.0 0.0 0.0 0.0" material="metal_silver" type="mesh"
                             mesh="hand_1.obj" class="visual" />
+                          <!-- Wrist cam: above the wrist, 40° toward the grippers.
+                               Stand-off is 2× the original (0.03 0.006 0.015). -->
+                          <camera name="left_wrist_camera" pos="0.06 0.012 0.03"
+                            xyaxes="0 1 0 0.766044 0 0.642788" fovy="100"/>
+                          <geom name="left_wrist_camera_marker" type="box" size="0.01 0.014 0.008"
+                            pos="0.06 0.012 0.03" rgba="0.2 0.85 1 1" contype="0" conaffinity="0"
+                            group="0"/>
                           <body name="openarm_left_hand_tcp" pos="0 -0.0 0.08"
                             quat="1.0 0.0 0.0 0.0" />
                           <body name="openarm_left_right_finger" pos="0 0.00 0.015"
@@ -271,7 +289,7 @@
                               diaginertia="2.3749999999999997e-06 2.3749999999999997e-06 7.5e-07" />
                             <geom name="openarm_left_right_finger_collision"
                               pos="0.0 0.05 -0.673001" quat="1.0 0.0 0.0 0.0" type="mesh"
-                              mesh="finger_collision_left" class="collision" />
+                              mesh="finger_collision_left" class="collision_grasp" />
                             <geom name="openarm_left_right_finger_visual_0" pos="0.0 0.05 -0.673001"
                               quat="1.0 0.0 0.0 0.0" material="default_material" type="mesh"
                               mesh="finger_0_flip.obj" class="visual" />
@@ -288,7 +306,7 @@
                               diaginertia="2.3749999999999997e-06 2.3749999999999997e-06 7.5e-07" />
                             <geom name="openarm_left_left_finger_collision"
                               pos="0.0 -0.05 -0.673001" quat="1.0 0.0 0.0 0.0" type="mesh"
-                              mesh="finger_collision" class="collision" />
+                              mesh="finger_collision" class="collision_grasp" />
                             <geom name="openarm_left_left_finger_visual_0" pos="0.0 -0.05 -0.673001"
                               quat="1.0 0.0 0.0 0.0" material="default_material" type="mesh"
                               mesh="finger_0.obj" class="visual" />
@@ -434,13 +452,20 @@
                             diaginertia="0.0001 0.00025 0.00017" />
                           <geom name="openarm_right_hand_collision" pos="0.0 0.005 -0.6585"
                             quat="1.0 0.0 0.0 0.0" type="mesh" mesh="hand_collision"
-                            class="collision" />
+                            class="collision_grasp" />
                           <geom name="openarm_right_hand_visual_0" pos="0.0 0.005 -0.6585"
                             quat="1.0 0.0 0.0 0.0" material="metal_silver" type="mesh"
                             mesh="hand_0.obj" class="visual" />
                           <geom name="openarm_right_hand_visual_1" pos="0.0 0.005 -0.6585"
                             quat="1.0 0.0 0.0 0.0" material="metal_silver" type="mesh"
                             mesh="hand_1.obj" class="visual" />
+                          <!-- Wrist cam: above the wrist, 40° toward the grippers.
+                               Stand-off is 2× the original (0.03 0.006 0.015). -->
+                          <camera name="right_wrist_camera" pos="0.06 0.012 0.03"
+                            xyaxes="0 1 0 0.766044 0 0.642788" fovy="100"/>
+                          <geom name="right_wrist_camera_marker" type="box" size="0.01 0.014 0.008"
+                            pos="0.06 0.012 0.03" rgba="0.2 0.85 1 1" contype="0" conaffinity="0"
+                            group="0"/>
                           <body name="openarm_right_hand_tcp" pos="0 -0.0 0.08"
                             quat="1.0 0.0 0.0 0.0" />
                           <body name="openarm_right_right_finger" pos="0 0.00 0.015"
@@ -452,7 +477,7 @@
                               diaginertia="2.3749999999999997e-06 2.3749999999999997e-06 7.5e-07" />
                             <geom name="openarm_right_right_finger_collision"
                               pos="0.0 0.05 -0.673001" quat="1.0 0.0 0.0 0.0" type="mesh"
-                              mesh="finger_collision_left" class="collision" />
+                              mesh="finger_collision_left" class="collision_grasp" />
                             <geom name="openarm_right_right_finger_visual_0"
                               pos="0.0 0.05 -0.673001" quat="1.0 0.0 0.0 0.0"
                               material="default_material" type="mesh" mesh="finger_0_flip.obj"
@@ -470,7 +495,7 @@
                               diaginertia="2.3749999999999997e-06 2.3749999999999997e-06 7.5e-07" />
                             <geom name="openarm_right_left_finger_collision"
                               pos="0.0 -0.05 -0.673001" quat="1.0 0.0 0.0 0.0" type="mesh"
-                              mesh="finger_collision" class="collision" />
+                              mesh="finger_collision" class="collision_grasp" />
                             <geom name="openarm_right_left_finger_visual_0"
                               pos="0.0 -0.05 -0.673001" quat="1.0 0.0 0.0 0.0"
                               material="default_material" type="mesh" mesh="finger_0.obj"
@@ -491,10 +516,10 @@
       </body>
     </body>
     <site name="world_site" pos="0 0 0" quat="1 0 0 0" />
-    <camera name="front_camera" mode="track" fovy="90.0"
+    <camera name="front_camera" mode="track" fovy="100"
       quat="4.329780281177467e-17 4.329780281177466e-17 0.7071067811865475 0.7071067811865476"
       pos="0.0 2.0 0.5" />
-    <camera name="side_camera" mode="track" fovy="90.0"
+    <camera name="side_camera" mode="track" fovy="100"
       quat="-0.5 -0.4999999999999999 0.5 0.5000000000000001" pos="-2.0 0.0 0.5" />
 
   </worldbody>
@@ -525,8 +550,8 @@
     <motor name="left_joint5_ctrl" joint="openarm_left_joint5" class="motor_DM4310" />
     <motor name="left_joint6_ctrl" joint="openarm_left_joint6" class="motor_DM4310" />
     <motor name="left_joint7_ctrl" joint="openarm_left_joint7" class="motor_DM4310" />
-    <motor name="left_finger1_ctrl" joint="openarm_left_finger_joint1" class="motor_finger" />
-    <motor name="left_finger2_ctrl" joint="openarm_left_finger_joint2" class="motor_finger" />
+    <position name="left_finger1_ctrl" joint="openarm_left_finger_joint1" class="motor_finger" />
+    <position name="left_finger2_ctrl" joint="openarm_left_finger_joint2" class="motor_finger" />
     <motor name="right_joint1_ctrl" joint="openarm_right_joint1" class="motor_DM8009" />
     <motor name="right_joint2_ctrl" joint="openarm_right_joint2" class="motor_DM8009" />
     <motor name="right_joint3_ctrl" joint="openarm_right_joint3" class="motor_DM4340" />

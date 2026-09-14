@@ -20,6 +20,18 @@
     <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
     <material name="table_mat" rgba="0.55 0.38 0.22 1" reflectance="0.1"/>
     <material name="cube_mat" rgba="0.85 0.2 0.15 1" reflectance="0.2"/>
+    <texture name="sign_tex_0" type="2d" builtin="flat" rgb1="1 1 1" width="64" height="64"/>
+    <material name="sign_mat_0" texture="sign_tex_0" specular="0" shininess="0"/>
+    <texture name="sign_tex_1" type="2d" builtin="flat" rgb1="1 1 1" width="64" height="64"/>
+    <material name="sign_mat_1" texture="sign_tex_1" specular="0" shininess="0"/>
+    <texture name="sign_tex_2" type="2d" builtin="flat" rgb1="1 1 1" width="64" height="64"/>
+    <material name="sign_mat_2" texture="sign_tex_2" specular="0" shininess="0"/>
+    <texture name="sign_tex_3" type="2d" builtin="flat" rgb1="1 1 1" width="64" height="64"/>
+    <material name="sign_mat_3" texture="sign_tex_3" specular="0" shininess="0"/>
+    <texture name="sign_tex_4" type="2d" builtin="flat" rgb1="1 1 1" width="64" height="64"/>
+    <material name="sign_mat_4" texture="sign_tex_4" specular="0" shininess="0"/>
+    <texture name="sign_tex_5" type="2d" builtin="flat" rgb1="1 1 1" width="64" height="64"/>
+    <material name="sign_mat_5" texture="sign_tex_5" specular="0" shininess="0"/>
   </asset>
 
   <worldbody>
@@ -42,11 +54,173 @@
     </body>
 
     <!-- 5 cm free cube on the table — pickable by the gripper. -->
+    <!-- Colour-sorting drop pads (visual only: cubes rest on the table). -->
+    <geom name="pad_left" type="box" size="0.06 0.06 0.0015" pos="0.20 0.30 0.3715"
+      rgba="0.55 0.55 0.55 1" contype="0" conaffinity="0"/>
+    <geom name="pad_right" type="box" size="0.06 0.06 0.0015" pos="0.20 -0.30 0.3715"
+      rgba="0.55 0.55 0.55 1" contype="0" conaffinity="0"/>
     <body name="cube" pos="0.305 0 0.395">
       <freejoint name="cube_free"/>
       <geom name="cube" type="box" size="0.025 0.025 0.025" mass="0.03"
         material="cube_mat" contype="1" conaffinity="1" condim="4"
         friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+
+    <!-- Chocolate bars (90 x 35 x 12.5 mm): a pool of 12 free bodies arranged
+         into per-trial stacks by the chocolate_bars sim. Unused bars park in
+         the warehouse row behind the robot. Colors (flavors) are set at
+         runtime via model.geom_rgba. -->
+    <body name="bar_0" pos="-0.55 -0.66 0.0065">
+      <freejoint name="bar_0_free"/>
+      <geom name="bar_0" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_1" pos="-0.55 -0.54 0.0065">
+      <freejoint name="bar_1_free"/>
+      <geom name="bar_1" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_2" pos="-0.55 -0.42 0.0065">
+      <freejoint name="bar_2_free"/>
+      <geom name="bar_2" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_3" pos="-0.55 -0.30 0.0065">
+      <freejoint name="bar_3_free"/>
+      <geom name="bar_3" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_4" pos="-0.55 -0.18 0.0065">
+      <freejoint name="bar_4_free"/>
+      <geom name="bar_4" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_5" pos="-0.55 -0.06 0.0065">
+      <freejoint name="bar_5_free"/>
+      <geom name="bar_5" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_6" pos="-0.55 0.06 0.0065">
+      <freejoint name="bar_6_free"/>
+      <geom name="bar_6" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_7" pos="-0.55 0.18 0.0065">
+      <freejoint name="bar_7_free"/>
+      <geom name="bar_7" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_8" pos="-0.55 0.30 0.0065">
+      <freejoint name="bar_8_free"/>
+      <geom name="bar_8" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_9" pos="-0.55 0.42 0.0065">
+      <freejoint name="bar_9_free"/>
+      <geom name="bar_9" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_10" pos="-0.55 0.54 0.0065">
+      <freejoint name="bar_10_free"/>
+      <geom name="bar_10" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_11" pos="-0.55 0.66 0.0065">
+      <freejoint name="bar_11_free"/>
+      <geom name="bar_11" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_12" pos="-0.55 0.78 0.0065">
+      <freejoint name="bar_12_free"/>
+      <geom name="bar_12" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_13" pos="-0.55 0.9 0.0065">
+      <freejoint name="bar_13_free"/>
+      <geom name="bar_13" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_14" pos="-0.55 1.02 0.0065">
+      <freejoint name="bar_14_free"/>
+      <geom name="bar_14" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_15" pos="-0.55 1.14 0.0065">
+      <freejoint name="bar_15_free"/>
+      <geom name="bar_15" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_16" pos="-0.55 1.26 0.0065">
+      <freejoint name="bar_16_free"/>
+      <geom name="bar_16" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_17" pos="-0.55 1.38 0.0065">
+      <freejoint name="bar_17_free"/>
+      <geom name="bar_17" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_18" pos="-0.55 1.50 0.0065">
+      <freejoint name="bar_18_free"/>
+      <geom name="bar_18" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_19" pos="-0.55 1.62 0.0065">
+      <freejoint name="bar_19_free"/>
+      <geom name="bar_19" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+    <body name="bar_20" pos="-0.55 1.74 0.0065">
+      <freejoint name="bar_20_free"/>
+      <geom name="bar_20" type="box" size="0.045 0.0175 0.00625" mass="0.02"
+        rgba="0.4 0.25 0.12 1" contype="1" conaffinity="1" condim="4"
+        friction="4 0.5 0.1" priority="1" solref="0.002 1"/>
+    </body>
+  
+  
+    <body name="sign_0" mocap="true" pos="-0.75 -0.66 0.02">
+      <geom name="sign_0" type="box" size="0.042 0.034 0.002"
+        material="sign_mat_0" contype="0" conaffinity="0"/>
+    </body>
+    <body name="sign_1" mocap="true" pos="-0.75 -0.54 0.02">
+      <geom name="sign_1" type="box" size="0.042 0.034 0.002"
+        material="sign_mat_1" contype="0" conaffinity="0"/>
+    </body>
+    <body name="sign_2" mocap="true" pos="-0.75 -0.42 0.02">
+      <geom name="sign_2" type="box" size="0.042 0.034 0.002"
+        material="sign_mat_2" contype="0" conaffinity="0"/>
+    </body>
+    <body name="sign_3" mocap="true" pos="-0.75 -0.30 0.02">
+      <geom name="sign_3" type="box" size="0.042 0.034 0.002"
+        material="sign_mat_3" contype="0" conaffinity="0"/>
+    </body>
+    <body name="sign_4" mocap="true" pos="-0.75 -0.18 0.02">
+      <geom name="sign_4" type="box" size="0.042 0.034 0.002"
+        material="sign_mat_4" contype="0" conaffinity="0"/>
+    </body>
+    <body name="sign_5" mocap="true" pos="-0.75 -0.06 0.02">
+      <geom name="sign_5" type="box" size="0.042 0.034 0.002"
+        material="sign_mat_5" contype="0" conaffinity="0"/>
     </body>
   </worldbody>
 </mujoco>

@@ -1,40 +1,103 @@
 # MuJoCo Description Files (MJCF) for OpenArm
-<img height="546" alt="image" src="https://github.com/user-attachments/assets/b969665c-75f9-470d-b327-e3806ae66002" />
+<img height="546" alt="image" src="media/v2.png" />
 
-This repository contains assets for OpenArm v1 (above) and v0.3 (below) simulation in MuJoCo. 
+This repository contains assets for OpenArm v2 (above), Cell, v1 and v0.3 (below) simulation in MuJoCo.
 
 ## Usage
 
-https://github.com/user-attachments/assets/814ee3e1-36dd-4561-a837-25e921838253
+To install a release with pip in a virtual environment:
 
-1. Install MuJoCo and launch a simulation.
-2. Drag the `*.xml` file into the simulation window.
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install openarm-mujoco
+```
 
-The motors use torque control, so position and velocity control can be achieved by implementing a simple PD controller in client code.
+For the example using `uv`, install [uv](https://docs.astral.sh/uv/getting-started/installation/),
+then choose one installation method:
+
+For editable development, run from this repository's source checkout:
+
+```bash
+uv sync
+source .venv/bin/activate
+```
+
+As a dependency in another uv project:
+
+```bash
+uv add openarm-mujoco
+source .venv/bin/activate
+```
+
+To try a release in a separate directory:
+
+```bash
+uv venv
+source .venv/bin/activate
+uv pip install openarm-mujoco
+```
+
+To test a specific wheel, replace the package name with its `.whl` file path.
+
+Launch the OpenArm v2 Cell simulation:
+
+```bash
+openarm-mujoco-launch
+```
+
+Without White Sheet:
+
+```bash
+openarm-mujoco-launch --no-sheet
+```
+
+With Wall Collisions:
+
+```bash
+openarm-mujoco-launch --walls
+```
+
+For v1 Bimanual Model (from the source checkout):
+
+```bash
+openarm-mujoco-launch v1/scene.xml --keyframe home
+```
+
+## OpenArm MuJoCo Web
+
+[OpenArm MuJoCo Web](web/README.md) runs these models right in the
+browser (MuJoCo WASM + three.js, no installation): open
+<https://enactic.github.io/openarm_mujoco/>, or serve the repository
+root locally (`npm run serve` in `web/`) and open
+<http://localhost:8080/>. Drive the arms by keyboard or sliders; see
+[web/README.md](web/README.md) for details.
 
 ## Collision Visualization
 - To view collision meshes, activate `Rendering`>`Model Elements`>`Convex Hull` and `Group Enable`>`Geom groups`>`Geom 3` in the left sidebar
 - It may also help to hide the visual meshes by deselecting `Geom 2`
-
-<img height="534" alt="image" src="https://github.com/user-attachments/assets/1b003bf4-f0ce-42b9-89df-c8efd073cde7" />
-
-## ROS2 Hardware Interface
-
-MuJoCo can be used to simulate realistic hardware interfaces to test low-frequency control without physical hardware. 
-
-https://github.com/enactic/openarm_mujoco_hardware
-
-
-## URDF to MJCF Conversion
-- Grippers actuate equally using a tendon and equality constraint, which uses a mimic joint in URDF
-- Off-diagonal inertias are set to zero
-- Motors require `ctrlrange` limits and joints have additional runtime properties `damping` and `frictionloss`
 
 ## Related links
 
 - 📚 Read the [documentation](https://docs.openarm.dev/simulation/mujoco)
 - 💬 Join the community on [Discord](https://discord.gg/FsZaZ4z3We)
 - 📬 Contact us through <openarm@enactic.ai>
+
+## Pull request and preview
+
+You can enable preview on your fork by the following:
+
+1. Enable GitHub Pages on your fork:
+   1. Open https://github.com/${YOUR_GITHUB_ACCOUNT}/openarm_mujoco/settings/pages
+   2. Select "GitHub Actions" as "Source"
+2. Accept publishing GitHub Pages from all branches on your fork:
+   1. Open https://github.com/${YOUR_GITHUB_ACCOUNT}/openarm_mujoco/settings/environments
+   2. Select the "github-pages" environment
+   3. Change the default "Deployment branches and tags" rule:
+      1. Press the "Edit" button
+      2. Change the "Name pattern" to `*` from `main`
+
+You can preview your changes at https://${YOUR_GITHUB_ACCOUNT}.github.io/openarm_mujoco/ .
 
 ## License
 
